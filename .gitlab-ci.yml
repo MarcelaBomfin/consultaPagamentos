@@ -1,7 +1,28 @@
 stages:
-  - build
+  - test
+  - report
 
-build_job:
-  stage: build
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+before_script:
+  - echo "Preparando ambiente"
+
+test_job:
+  stage: test
   script:
-    - echo "Pipeline funcionando!"
+    - echo "Rodando testes"
+    - npm install
+    - npm test
+  artifacts:
+    paths:
+      - reports/
+    when: always
+
+report_job:
+  stage: report
+  script:
+    - echo "Gerando relatório"
+  artifacts:
+    paths:
+      - reports/
